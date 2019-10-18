@@ -86,6 +86,7 @@ namespace Project1.WebApp.Controllers
             }
         }
 
+        // GET: Customer/SearchResults/
         public ActionResult SearchResults(WebApp.Models.CustomerSearch viewModel)
         {
             try

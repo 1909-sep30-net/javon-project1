@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Project1.WebApp.Models.Order>
+
+@{
+    ViewData["Title"] = "Orders with Location ID";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Index">Back to Orders</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LocationId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LineItems)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LocationId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LineItems)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

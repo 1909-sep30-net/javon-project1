@@ -9,5 +9,7 @@ namespace Project1.BusinessLogic
         void AddCustomer(Customer customer);
 
         IEnumerable<Customer> GetCustomersByLastName(string lastName);
+
+        IEnumerable<Order> GetOrdersByLocationId(int locationId);
     }
 }
