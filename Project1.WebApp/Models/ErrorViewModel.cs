@@ -1,6 +1,6 @@
 using System;
 
-namespace javon_project1.Models
+namespace Project1.WebApp.Models
 {
     public class ErrorViewModel
     {

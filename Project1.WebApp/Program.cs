@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace javon_project1
+namespace Project1.WebApp
 {
     public class Program
     {

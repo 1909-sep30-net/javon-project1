@@ -1,9 +1,13 @@
-﻿using javon_project1.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Diagnostics;
+using Project1.WebApp.Models;
 
-namespace javon_project1.Controllers
+namespace Project1.WebApp.Controllers
 {
     public class HomeController : Controller
     {
