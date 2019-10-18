@@ -23,5 +23,15 @@ namespace Project1.Persistence
                 LastName = c.LastName
             });
         }
+
+        public void AddCustomer(BusinessLogic.Customer customer)
+        {
+            _context.Customer.Add(new Entities.Customer
+            {
+                FirstName = customer.FirstName,
+                LastName = customer.LastName
+            });
+            _context.SaveChanges();
+        }
     }
 }
