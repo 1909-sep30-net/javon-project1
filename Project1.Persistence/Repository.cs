@@ -33,5 +33,16 @@ namespace Project1.Persistence
             });
             _context.SaveChanges();
         }
+
+        public IEnumerable<BusinessLogic.Customer> GetCustomersByLastName(string lastName)
+        {
+            return _context.Customer.Where(c => c.LastName.ToLower() == lastName.ToLower())
+                .Select(c => new BusinessLogic.Customer
+                {
+                    Id = c.Id,
+                    FirstName = c.FirstName,
+                    LastName = c.LastName
+                });
+        }
     }
 }

@@ -4,8 +4,10 @@ namespace Project1.BusinessLogic
 {
     public interface IRepository
     {
-        public IEnumerable<Customer> GetAllCustomers();
+        IEnumerable<Customer> GetAllCustomers();
 
         void AddCustomer(Customer customer);
+
+        IEnumerable<Customer> GetCustomersByLastName(string lastName);
     }
 }

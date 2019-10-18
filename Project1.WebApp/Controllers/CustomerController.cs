@@ -58,5 +58,52 @@ namespace Project1.WebApp.Controllers
                 return View(viewModel);
             }
         }
+
+        // GET: Customer/Search
+        public ActionResult Search()
+        {
+            return View();
+        }
+
+        // POST: Customer/Search
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Search(WebApp.Models.CustomerSearch viewModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(viewModel);
+                }
+
+                return RedirectToAction(nameof(SearchResults), viewModel);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Name", ex.Message);
+                return View(viewModel);
+            }
+        }
+
+        public ActionResult SearchResults(WebApp.Models.CustomerSearch viewModel)
+        {
+            try
+            {
+                IEnumerable<BusinessLogic.Customer> filteredCustomers = _repository.GetCustomersByLastName(viewModel.LastName);
+
+                return View("SearchResults", filteredCustomers.Select(c => new WebApp.Models.Customer
+                {
+                    Id = c.Id.ToString(),
+                    FirstName = c.FirstName,
+                    LastName = c.LastName
+                }));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Name", ex.Message);
+                return View(viewModel);
+            }
+        }
     }
 }
