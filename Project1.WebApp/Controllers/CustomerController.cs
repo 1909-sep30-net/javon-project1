@@ -1,16 +1,29 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Project1.WebApp.Controllers
 {
     public class CustomerController : Controller
     {
+        private readonly BusinessLogic.IRepository _repository;
+
+        public CustomerController(BusinessLogic.IRepository repository)
+        {
+            _repository = repository;
+        }
+
         // GET: Customer
         public ActionResult Index()
         {
-            IEnumerable<Project1.WebApp.Models.Customer> customers = new List<Project1.WebApp.Models.Customer>();
-            return View(customers);
+            IEnumerable<BusinessLogic.Customer> blCustomers = _repository.GetAllCustomers();
+            return View(blCustomers.Select(c => new WebApp.Models.Customer
+            {
+                Id = c.Id.ToString(),
+                FirstName = c.FirstName,
+                LastName = c.LastName
+            }));
         }
 
         // GET: Customer/Details/5

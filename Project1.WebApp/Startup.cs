@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Project1.BusinessLogic;
+using Project1.Persistence;
+using Project1.Persistence.Entities;
 
 namespace Project1.WebApp
 {
@@ -18,6 +22,19 @@ namespace Project1.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // we get the connection string from runtime configuration
+            string connectionString = Configuration.GetConnectionString("TThreeTeasDB");
+
+            // among the services you register for DI (dependency injection) should be your DbContext.
+            services.AddDbContext<TThreeTeasContext>(options =>
+            {
+                options.UseSqlServer(connectionString);
+            });
+
+            // this registers the Repository class under the "name" of IRepository.
+            // aka: "if anyone needs an IRepository, make a Repository."
+            services.AddScoped<IRepository, Repository>();
+
             services.AddControllersWithViews();
         }
 

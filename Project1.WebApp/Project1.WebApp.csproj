@@ -2,9 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UserSecretsId>7c2aa404-893c-42cf-920f-964f65a66e44</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
@@ -16,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Project1.BusinessLogic\Project1.BusinessLogic.csproj" />
+    <ProjectReference Include="..\Project1.Persistence\Project1.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
