@@ -2,7 +2,7 @@
 
 namespace Project1.WebApp.Models
 {
-    public class Order
+    public class OrderDetails
     {
         [DisplayName("Order ID")]
         public string Id { get; set; }
@@ -15,5 +15,8 @@ namespace Project1.WebApp.Models
 
         [DisplayName("Order Time")]
         public string OrderTime { get; set; }
+
+        [DisplayName("Line Items")]
+        public string LineItems { get; set; }
     }
 }

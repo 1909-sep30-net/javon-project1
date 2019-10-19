@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Project1.WebApp.Controllers
 {
@@ -56,19 +54,18 @@ namespace Project1.WebApp.Controllers
             {
                 IEnumerable<BusinessLogic.Order> filteredOrders = _repository.GetOrdersByLocationId(viewModel.LocationId);
 
-                return View("LocationHistory", filteredOrders.Select(o => new WebApp.Models.Order
+                return View(filteredOrders.Select(o => new WebApp.Models.Order
                 {
                     Id = o.Id.ToString(),
-                    LocationId = o.StoreLocation.Id.ToString(),
-                    CustomerId = o.Customer.Id.ToString(),
-                    OrderTime = o.OrderTime.ToString(),
-                    LineItems = o.StoreLocation.ToStringInventory()
+                    Location = o.StoreLocation.ToString(),
+                    Customer = o.Customer.ToString(),
+                    OrderTime = o.OrderTime.ToString()
                 }));
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("Name", ex.Message);
-                return View(viewModel);
+                return View(new List<WebApp.Models.Order>());
             }
         }
 
@@ -78,11 +75,54 @@ namespace Project1.WebApp.Controllers
             return View();
         }
 
+        // POST: Order/CustomerSearch
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CustomerSearch(WebApp.Models.OrderCustomerSearch viewModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(viewModel);
+                }
+
+                return RedirectToAction(nameof(CustomerHistory), viewModel);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Name", ex.Message);
+                return View(viewModel);
+            }
+        }
+
+        // GET: Order/CustomerHistory/
+        public ActionResult CustomerHistory(WebApp.Models.OrderCustomerSearch viewModel)
+        {
+            try
+            {
+                IEnumerable<BusinessLogic.Order> filteredOrders = _repository.GetOrdersByCustomerId(viewModel.CustomerId);
+
+                return View(filteredOrders.Select(o => new WebApp.Models.Order
+                {
+                    Id = o.Id.ToString(),
+                    Location = o.StoreLocation.ToString(),
+                    Customer = o.Customer.ToString(),
+                    OrderTime = o.OrderTime.ToString()
+                }));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Name", ex.Message);
+                return View(new List<WebApp.Models.Order>());
+            }
+        }
+
         // GET: Order/Details/5
-        //public ActionResult Details(int id)
-        //{
-        //    return View();
-        //}
+        public ActionResult Details(int id)
+        {
+            return View();
+        }
 
         //// GET: Order/Create
         //public ActionResult Create()

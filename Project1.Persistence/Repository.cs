@@ -59,6 +59,25 @@ namespace Project1.Persistence
                 });
         }
 
+        public IEnumerable<Order> GetOrdersByCustomerId(int customerId)
+        {
+            return _context.Orders.Where(o => o.CustomerId == customerId).ToList()
+                .Select(o => new BusinessLogic.Order
+                {
+                    Id = o.Id,
+                    StoreLocation = GetLocationById(o.LocationId),
+                    Customer = GetCustomerById(o.CustomerId),
+                    OrderTime = o.OrderTime,
+                    LineItems = GetLineItemsByOrderId(o.Id)
+                });
+        }
+
+        public IEnumerable<BusinessLogic.Location> GetAllLocations()
+        {
+            return _context.Location.ToList()
+                .Select(l => GetLocationById(l.Id));
+        }
+
         private BusinessLogic.Location GetLocationById(int locationId)
         {
             Entities.Location location = _context.Location.Where(l => l.Id == locationId).FirstOrDefault();
