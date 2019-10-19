@@ -1,0 +1,37 @@
+﻿@model Project1.WebApp.Models.OrderPlace
+
+@{
+    ViewData["Title"] = "Place Order";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Place">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Locations" class="control-label"></label>
+                <div class="col-md-10">
+                    <select asp-for="LocationId" asp-items="Model.Locations"></select>
+                    <span asp-validation-for="LocationId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Customers" class="control-label"></label>
+                <div class="col-md-10">
+                    <select asp-for="CustomerId" asp-items="Model.Customers"></select>
+                    <span asp-validation-for="CustomerId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Next: Select Products" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to Orders</a>
+</div>

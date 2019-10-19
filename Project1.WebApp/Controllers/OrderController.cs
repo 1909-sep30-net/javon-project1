@@ -141,27 +141,39 @@ namespace Project1.WebApp.Controllers
             }
         }
 
-        //// GET: Order/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
+        // GET: Order/Place
+        public ActionResult Place()
+        {
+            IEnumerable<BusinessLogic.Location> locations = _repository.GetAllLocations();
+            IEnumerable<BusinessLogic.Customer> customers = _repository.GetAllCustomers();
+            return View(new WebApp.Models.OrderPlace
+            {
+                Locations = locations.Select(l => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+                {
+                    Text = l.ToString(),
+                    Value = l.Id.ToString()
+                }),
+                Customers = customers.Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+                {
+                    Text = c.ToString(),
+                    Value = c.Id.ToString()
+                })
+            });
+        }
 
-        //// POST: Order/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create(IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add insert logic here
-
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+        // POST: Order/Place
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(WebApp.Models.OrderPlace viewModel)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
     }
 }
