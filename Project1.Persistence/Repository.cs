@@ -17,12 +17,7 @@ namespace Project1.Persistence
 
         public IEnumerable<BusinessLogic.Customer> GetAllCustomers()
         {
-            return _context.Customer.Select(c => new BusinessLogic.Customer
-            {
-                Id = c.Id,
-                FirstName = c.FirstName,
-                LastName = c.LastName
-            });
+            return _context.Customer.ToList().Select(c => GetCustomerById(c.Id));
         }
 
         public void AddCustomer(BusinessLogic.Customer customer)
@@ -37,45 +32,43 @@ namespace Project1.Persistence
 
         public IEnumerable<BusinessLogic.Customer> GetCustomersByLastName(string lastName)
         {
-            return _context.Customer.Where(c => c.LastName.ToLower() == lastName.ToLower())
-                .Select(c => new BusinessLogic.Customer
-                {
-                    Id = c.Id,
-                    FirstName = c.FirstName,
-                    LastName = c.LastName
-                });
+            return _context.Customer.Where(c => c.LastName.ToLower() == lastName.ToLower()).ToList()
+                .Select(c => GetCustomerById(c.Id));
         }
 
         public IEnumerable<Order> GetOrdersByLocationId(int locationId)
         {
             return _context.Orders.Where(o => o.LocationId == locationId).ToList()
-                .Select(o => new BusinessLogic.Order
-                {
-                    Id = o.Id,
-                    StoreLocation = GetLocationById(o.LocationId),
-                    Customer = GetCustomerById(o.CustomerId),
-                    OrderTime = o.OrderTime,
-                    LineItems = GetLineItemsByOrderId(o.Id)
-                });
+                .Select(o => GetOrderById(o.Id));
         }
 
         public IEnumerable<Order> GetOrdersByCustomerId(int customerId)
         {
             return _context.Orders.Where(o => o.CustomerId == customerId).ToList()
-                .Select(o => new BusinessLogic.Order
-                {
-                    Id = o.Id,
-                    StoreLocation = GetLocationById(o.LocationId),
-                    Customer = GetCustomerById(o.CustomerId),
-                    OrderTime = o.OrderTime,
-                    LineItems = GetLineItemsByOrderId(o.Id)
-                });
+                .Select(o => GetOrderById(o.Id));
+        }
+
+        public BusinessLogic.Order GetOrderById(int id)
+        {
+            Entities.Orders order = _context.Orders.Where(o => o.Id == id).FirstOrDefault();
+            if (order is null)
+            {
+                throw new OrderException("Invalid order ID");
+            }
+
+            return new BusinessLogic.Order
+            {
+                Id = order.Id,
+                StoreLocation = GetLocationById(order.LocationId),
+                Customer = GetCustomerById(order.CustomerId),
+                OrderTime = order.OrderTime,
+                LineItems = GetLineItemsByOrderId(order.Id)
+            };
         }
 
         public IEnumerable<BusinessLogic.Location> GetAllLocations()
         {
-            return _context.Location.ToList()
-                .Select(l => GetLocationById(l.Id));
+            return _context.Location.ToList().Select(l => GetLocationById(l.Id));
         }
 
         private BusinessLogic.Location GetLocationById(int locationId)

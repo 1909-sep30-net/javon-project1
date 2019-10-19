@@ -15,5 +15,7 @@ namespace Project1.BusinessLogic
         IEnumerable<Order> GetOrdersByCustomerId(int customerId);
 
         IEnumerable<Location> GetAllLocations();
+
+        Order GetOrderById(int id);
     }
 }

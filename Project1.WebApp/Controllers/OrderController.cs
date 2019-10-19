@@ -121,7 +121,24 @@ namespace Project1.WebApp.Controllers
         // GET: Order/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            try
+            {
+                BusinessLogic.Order order = _repository.GetOrderById(id);
+
+                return View(new WebApp.Models.OrderDetails
+                {
+                    Id = order.Id.ToString(),
+                    Location = order.StoreLocation.ToString(),
+                    Customer = order.Customer.ToString(),
+                    OrderTime = order.OrderTime.ToString(),
+                    LineItems = order.StoreLocation.ToStringInventory()
+                });
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Name", ex.Message);
+                return View(new WebApp.Models.Order());
+            }
         }
 
         //// GET: Order/Create
