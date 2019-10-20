@@ -13,8 +13,9 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="CustomerId" class="control-label"></label>
-                <input asp-for="CustomerId" class="form-control" />
-                <span asp-validation-for="CustomerId" class="text-danger"></span>
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.CustomerId, Model.Customers.Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Text = c.ToString(), Value = c.Id.ToString() }));
+                </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Search" class="btn btn-primary" />
@@ -24,5 +25,5 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back to Orders</a>
 </div>

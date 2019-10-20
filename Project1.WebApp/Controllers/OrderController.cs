@@ -73,7 +73,12 @@ namespace Project1.WebApp.Controllers
         // GET: Order/CustomerSearch
         public ActionResult CustomerSearch()
         {
-            return View();
+            IEnumerable<BusinessLogic.Customer> customers = _repository.GetAllCustomers();
+            return View(new WebApp.Models.OrderCustomerSearch
+            {
+                Customers = customers,
+                CustomerId = 0
+            });
         }
 
         // POST: Order/CustomerSearch
