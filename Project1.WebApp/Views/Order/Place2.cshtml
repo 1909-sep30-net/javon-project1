@@ -1,0 +1,33 @@
+﻿@model Project1.WebApp.Models.OrderCreate
+
+@{
+    ViewData["Title"] = $"Place an Order at Location {Model.LocationId} for Customer {Model.CustomerId}";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            @Html.HiddenFor(m => m.LocationId)
+            @Html.HiddenFor(m => m.CustomerId)
+            @{
+                foreach (KeyValuePair<Project1.BusinessLogic.Product, int> item in Model.Inventory)
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(m => item.Key, item.Key.Name)
+                        @Html.DropDownListFor(m => m.SelectedInventory[item.Key.Id], Enumerable.Range(0, item.Value + 1).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
+                    </div>
+                }
+            }
+            <div class="form-group">
+                <input type="submit" value="Place Order" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to Orders</a>
+</div>

@@ -12,17 +12,15 @@
         <form asp-action="Place">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Locations" class="control-label"></label>
+                <label asp-for="LocationId" class="control-label"></label>
                 <div class="col-md-10">
-                    <select asp-for="LocationId" asp-items="Model.Locations"></select>
-                    <span asp-validation-for="LocationId" class="text-danger"></span>
+                    @Html.DropDownListFor(m => m.LocationId, Model.Locations.Select(l => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Text = l.ToString(), Value = l.Id.ToString() }));
                 </div>
             </div>
             <div class="form-group">
-                <label asp-for="Customers" class="control-label"></label>
+                <label asp-for="CustomerId" class="control-label"></label>
                 <div class="col-md-10">
-                    <select asp-for="CustomerId" asp-items="Model.Customers"></select>
-                    <span asp-validation-for="CustomerId" class="text-danger"></span>
+                    @Html.DropDownListFor(m => m.CustomerId, Model.Customers.Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Text = c.ToString(), Value = c.Id.ToString() }));
                 </div>
             </div>
             <div class="form-group">

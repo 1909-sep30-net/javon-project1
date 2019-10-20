@@ -2,6 +2,8 @@
 using Project1.Persistence.Entities;
 using System.Collections.Generic;
 using System.Linq;
+using Serilog;
+using System;
 
 namespace Project1.Persistence
 {
@@ -70,8 +72,9 @@ namespace Project1.Persistence
             return _context.Location.ToList().Select(l => GetLocationById(l.Id));
         }
 
-        private BusinessLogic.Location GetLocationById(int locationId)
+        public BusinessLogic.Location GetLocationById(int locationId)
         {
+            Log.Information($"Getting location by ID {locationId}");
             Entities.Location location = _context.Location.Where(l => l.Id == locationId).FirstOrDefault();
             if (location is null)
             {
@@ -94,7 +97,7 @@ namespace Project1.Persistence
             return bLocation;
         }
 
-        private BusinessLogic.Product GetProductById(int productId)
+        public BusinessLogic.Product GetProductById(int productId)
         {
             Entities.Product product = _context.Product.Where(p => p.Id == productId).FirstOrDefault();
             if (product is null)
@@ -109,7 +112,7 @@ namespace Project1.Persistence
             };
         }
 
-        private BusinessLogic.Customer GetCustomerById(int customerId)
+        public BusinessLogic.Customer GetCustomerById(int customerId)
         {
             Entities.Customer customer = _context.Customer.Where(c => c.Id == customerId).FirstOrDefault();
             if (customer is null)
@@ -133,6 +136,68 @@ namespace Project1.Persistence
                 lineItems.Add(GetProductById(lineItem.ProductId), lineItem.Quantity);
             }
             return lineItems;
+        }
+
+        public void CreateOrder(int locationId, int customerId, Dictionary<int, int> updatedInventories)
+        {
+            BusinessLogic.Order order = new BusinessLogic.Order
+            {
+                StoreLocation = GetLocationById(locationId),
+                Customer = GetCustomerById(customerId),
+                OrderTime = DateTime.Now
+            };
+            Dictionary<BusinessLogic.Product, int> inv = new Dictionary<BusinessLogic.Product, int>();
+            foreach (KeyValuePair<int, int> item in updatedInventories)
+            {
+                if (item.Value > 0)
+                {
+                    BusinessLogic.Product product = GetProductById(item.Key);
+                    order.StoreLocation.DecrementStock(product, item.Value);
+                    inv.Add(product, item.Value);
+                }
+            }
+            order.AddLineItems(inv);
+
+            Orders additionalOrder = new Orders()
+            {
+                LocationId = order.StoreLocation.Id,
+                CustomerId = order.Customer.Id,
+                OrderTime = order.OrderTime
+            };
+
+            _context.Orders.Add(additionalOrder);
+            _context.SaveChanges();
+            Log.Information($"Added the additional order to the database");
+
+            List<LineItem> additionalLineItems = new List<LineItem>();
+            foreach (KeyValuePair<BusinessLogic.Product, int> lineItem in order.LineItems)
+            {
+                LineItem additionalLineItem = new LineItem()
+                {
+                    OrdersId = additionalOrder.Id,
+                    ProductId = lineItem.Key.Id,
+                    Quantity = lineItem.Value
+                };
+                additionalLineItems.Add(additionalLineItem);
+            }
+            foreach (LineItem additionalLineItem in additionalLineItems)
+            {
+                _context.LineItem.Add(additionalLineItem);
+            }
+            _context.SaveChanges();
+            Log.Information($"Added the additional line items to the database");
+
+            foreach (KeyValuePair<BusinessLogic.Product, int> inventory in order.StoreLocation.inventory)
+            {
+                Log.Information($"inventory item - Location ID {order.StoreLocation.Id} {inventory.Key} Stock {inventory.Value}");
+                Inventory updatedInventory = _context.Inventory
+                    .Where(i => (i.LocationId == order.StoreLocation.Id && i.ProductId == inventory.Key.Id))
+                    .FirstOrDefault();
+                updatedInventory.Stock = inventory.Value;
+            }
+
+            _context.SaveChanges();
+            Log.Information($"Updated inventories to the database");
         }
     }
 }

@@ -17,5 +17,13 @@ namespace Project1.BusinessLogic
         IEnumerable<Location> GetAllLocations();
 
         Order GetOrderById(int id);
+
+        Location GetLocationById(int locationId);
+
+        Customer GetCustomerById(int customerId);
+
+        Product GetProductById(int productId);
+
+        void CreateOrder(int locationId, int customerId, Dictionary<int, int> updatedInventories);
     }
 }

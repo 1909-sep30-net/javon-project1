@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Serilog;
 
 namespace Project1.WebApp.Controllers
 {
@@ -144,35 +145,70 @@ namespace Project1.WebApp.Controllers
         // GET: Order/Place
         public ActionResult Place()
         {
+            Log.Information($"Placing an Order GET");
             IEnumerable<BusinessLogic.Location> locations = _repository.GetAllLocations();
             IEnumerable<BusinessLogic.Customer> customers = _repository.GetAllCustomers();
             return View(new WebApp.Models.OrderPlace
             {
-                Locations = locations.Select(l => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-                {
-                    Text = l.ToString(),
-                    Value = l.Id.ToString()
-                }),
-                Customers = customers.Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-                {
-                    Text = c.ToString(),
-                    Value = c.Id.ToString()
-                })
+                Locations = locations,
+                Customers = customers
             });
         }
 
         // POST: Order/Place
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(WebApp.Models.OrderPlace viewModel)
+        public ActionResult Place(WebApp.Models.OrderPlace viewModel)
         {
+            Log.Information($"Placing an Order POST - Redirecting to GET Place2");
             try
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Place2), viewModel);
             }
             catch
             {
                 return View();
+            }
+        }
+
+        // GET: Order/Place2
+        public ActionResult Place2(WebApp.Models.OrderPlace viewModel)
+        {
+            Log.Information($"Placing an Order 2 - Location ID: {viewModel.LocationId} Customer ID: {viewModel.CustomerId}");
+            BusinessLogic.Location location = _repository.GetLocationById(viewModel.LocationId);
+            Log.Information($"Placing an Order 2 - Location: {location.ToString()} Inventory: {location.ToStringInventory()}");
+            return View(new WebApp.Models.OrderCreate
+            {
+                LocationId = viewModel.LocationId,
+                CustomerId = viewModel.CustomerId,
+                Inventory = location.inventory,
+                SelectedInventory = location.inventory.ToDictionary(i => i.Key.Id, i => 0)
+            });
+        }
+
+        // POST: Order/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(WebApp.Models.OrderCreate viewModel)
+        {
+            try
+            {
+                Log.Information($"Creating an order - location ID {viewModel.LocationId} for customer ID {viewModel.CustomerId}");
+                foreach (KeyValuePair<int, int> item in viewModel.SelectedInventory)
+                {
+                    Log.Information($"Product ID {item.Key} Quantity {item.Value}");
+                }
+
+                _repository.CreateOrder(
+                    viewModel.LocationId,
+                    viewModel.CustomerId,
+                    viewModel.SelectedInventory);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                return RedirectToAction(nameof(Index));
             }
         }
     }
