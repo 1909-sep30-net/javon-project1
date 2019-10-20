@@ -37,6 +37,7 @@ namespace Project1.BusinessLogic
         /// </summary>
         private void ValidateNotTooManyLines()
         {
+            Log.Information($"Validating not too many lines");
             if (LineItems.Count > maxLines)
             {
                 throw new OrderException($"[!] Too many lines for this order");
@@ -50,6 +51,7 @@ namespace Project1.BusinessLogic
         /// <param name="productId"></param>
         private void ValidateNotDuplicateProductId(int productId)
         {
+            Log.Information($"Validating {productId} for duplicate product");
             if (LineItems.Any(l => l.Key.Id == productId))
             {
                 throw new OrderException($"[!] Duplicate product Id {productId}");
@@ -64,6 +66,7 @@ namespace Project1.BusinessLogic
         /// <param name="qty">The quantity of the line item</param>
         private void ValidateQuantityGreaterThanZero(Product product, int qty)
         {
+            Log.Information($"Validating {product} with quantity {qty} has quantity greater than zero");
             if (qty <= 0)
             {
                 throw new OrderException($"[!] {product} of quantity {qty} item does not have a quantity greater than 0");
@@ -78,6 +81,7 @@ namespace Project1.BusinessLogic
         /// <param name="qty">The quantity of the line item</param>
         private void ValidateQuantityBelowLimit(Product product, int qty)
         {
+            Log.Information($"Validating {product} with quantity {qty} has quantity below {maxQuantity}");
             if (qty > maxQuantity)
             {
                 throw new OrderException($"[!] {product} of quantity {qty} item has a quantity greater than {maxQuantity}");
@@ -89,6 +93,7 @@ namespace Project1.BusinessLogic
         /// </summary>
         private void ValidateHasLines()
         {
+            Log.Information($"Validating order has lines");
             if (LineItems.Count == 0)
             {
                 throw new OrderException($"[!] Order has no lines");
@@ -101,7 +106,7 @@ namespace Project1.BusinessLogic
         /// <param name="lineItems">The list of line items</param>
         public void AddLineItems(Dictionary<Product, int> lineItems)
         {
-            //Log.Information($"Adding line items {lineItems}");
+            Log.Information($"Adding line items {lineItems}");
             foreach (KeyValuePair<Product, int> lineItem in lineItems)
             {
                 ValidateNotTooManyLines();

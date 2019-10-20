@@ -13,7 +13,10 @@ namespace Project1.WebApp.Controllers
             _repository = repository;
         }
 
-        // GET: Location
+        /// <summary>
+        /// GET: Location
+        /// </summary>
+        /// <returns>The list of locations</returns>
         public ActionResult Index()
         {
             IEnumerable<BusinessLogic.Location> blLocations = _repository.GetAllLocations();

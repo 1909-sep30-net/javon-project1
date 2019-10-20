@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace Project1.WebApp.Controllers
 {
+    /// <summary>
+    /// Handles the customer requests.
+    /// </summary>
     public class CustomerController : Controller
     {
         private readonly BusinessLogic.IRepository _repository;
@@ -14,11 +17,14 @@ namespace Project1.WebApp.Controllers
             _repository = repository;
         }
 
-        // GET: Customer
+        /// <summary>
+        /// GET: Customer
+        /// </summary>
+        /// <returns>List of all customers</returns>
         public ActionResult Index()
         {
-            IEnumerable<BusinessLogic.Customer> blCustomers = _repository.GetAllCustomers();
-            return View(blCustomers.Select(c => new WebApp.Models.Customer
+            IEnumerable<BusinessLogic.Customer> customers = _repository.GetAllCustomers();
+            return View(customers.Select(c => new WebApp.Models.Customer
             {
                 Id = c.Id.ToString(),
                 FirstName = c.FirstName,
@@ -26,13 +32,20 @@ namespace Project1.WebApp.Controllers
             }));
         }
 
-        // GET: Customer/Create
+        /// <summary>
+        /// GET: Customer/Create
+        /// </summary>
+        /// <returns>Form for creating a customer</returns>
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Customer/Create
+        /// <summary>
+        /// POST: Customer/Create
+        /// </summary>
+        /// <param name="viewModel">The customer form</param>
+        /// <returns>The form if it is invalid, otherwise redirect to index</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(WebApp.Models.Customer viewModel)
@@ -59,13 +72,20 @@ namespace Project1.WebApp.Controllers
             }
         }
 
-        // GET: Customer/Search
+        /// <summary>
+        /// GET: Customer/Search
+        /// </summary>
+        /// <returns>The form for searching a customer by last name</returns>
         public ActionResult Search()
         {
             return View();
         }
 
-        // POST: Customer/Search
+        /// <summary>
+        /// POST: Customer/Search
+        /// </summary>
+        /// <param name="viewModel">The form for customer being searched</param>
+        /// <returns>The form if it is invalid, otherwise redirect to the search results</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Search(WebApp.Models.CustomerSearch viewModel)
@@ -86,7 +106,11 @@ namespace Project1.WebApp.Controllers
             }
         }
 
-        // GET: Customer/SearchResults/
+        /// <summary>
+        /// GET: Customer/SearchResults/
+        /// </summary>
+        /// <param name="viewModel">The form for customer being searched</param>
+        /// <returns>The search results otherwise the index if there was an error</returns>
         public ActionResult SearchResults(WebApp.Models.CustomerSearch viewModel)
         {
             try
@@ -103,7 +127,7 @@ namespace Project1.WebApp.Controllers
             catch (Exception ex)
             {
                 ModelState.AddModelError("Name", ex.Message);
-                return View(viewModel);
+                return RedirectToAction(nameof(Index));
             }
         }
     }

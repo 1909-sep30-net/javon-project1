@@ -14,6 +14,10 @@ namespace Project1.WebApp.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// GET /
+        /// </summary>
+        /// <returns>The home page</returns>
         public IActionResult Index()
         {
             return View();

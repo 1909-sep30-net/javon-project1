@@ -57,7 +57,7 @@ namespace Project1.BusinessLogic
         /// <param name="qty">The amount of the product to decrement</param>
         public void DecrementStock(Product bProduct, int qty)
         {
-            //Log.Information($"Decrementing stock of location {Id} of product {bProduct} with quantity {qty}");
+            Log.Information($"Decrementing stock of location {Id} of product {bProduct} with quantity {qty}");
             if (!inventory.Keys.Any(p => p.Id == bProduct.Id))
             {
                 throw new LocationException($"[!] Location does not have {bProduct} in stock");
