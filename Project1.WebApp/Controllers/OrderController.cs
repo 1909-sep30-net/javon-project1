@@ -24,7 +24,12 @@ namespace Project1.WebApp.Controllers
         // GET: Order/LocationSearch
         public ActionResult LocationSearch()
         {
-            return View();
+            IEnumerable<BusinessLogic.Location> locations = _repository.GetAllLocations();
+            return View(new WebApp.Models.OrderLocationSearch
+            {
+                Locations = locations,
+                LocationId = 0
+            });
         }
 
         // POST: Order/LocationSearch
