@@ -1,11 +1,12 @@
-﻿@model Project1.WebApp.Models.OrderDetails
+﻿@using System
+@model Project1.WebApp.Models.OrderDetails
 
 @{
     ViewData["Title"] = "Order Details";
 }
 
 <h1>@ViewData["Title"]</h1>
-
+<hr />
 <div>
     <dl class="row">
         <dt class="col-sm-2">
@@ -38,10 +39,12 @@
         <dd class="col-sm-10">
             <table>
                 <thead>
-                <th>Product ID</th>
-                <th>Product Name</th>
-                <th>Product Price</th>
-                <th>Quantity</th>
+                    <tr>
+                        <th>Product ID</th>
+                        <th>Product Name</th>
+                        <th>Product Price</th>
+                        <th>Quantity</th>
+                    </tr>
                 </thead>
                 <tbody>
                     @{
@@ -50,7 +53,7 @@
                             <tr>
                                 <td>@item.Key.Id</td>
                                 <td>@item.Key.Name</td>
-                                <td>@item.Key.Price</td>
+                                <td>$@System.Decimal.Round(item.Key.Price, 2)</td>
                                 <td>@item.Value</td>
                             </tr>
                         }

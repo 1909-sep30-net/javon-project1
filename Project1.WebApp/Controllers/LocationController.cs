@@ -27,7 +27,7 @@ namespace Project1.WebApp.Controllers
                 City = l.City,
                 Zipcode = l.Zipcode,
                 State = l.State,
-                Inventory = l.ToStringInventory()
+                Inventory = l.inventory
             }));
         }
     }

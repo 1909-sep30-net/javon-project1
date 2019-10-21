@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Project1.WebApp.Models
 {
@@ -20,6 +21,6 @@ namespace Project1.WebApp.Models
         public string State { get; set; }
 
         [DisplayName("Inventory")]
-        public string Inventory { get; set; }
+        public Dictionary<BusinessLogic.Product, int> Inventory { get; set; }
     }
 }

@@ -1,11 +1,12 @@
-﻿@model IEnumerable<Project1.WebApp.Models.Location>
+﻿@using System
+@model IEnumerable<Project1.WebApp.Models.Location>
 
 @{
     ViewData["Title"] = "Locations";
 }
 
 <h1>@ViewData["Title"]</h1>
-
+<hr />
 <table class="table">
     <thead>
         <tr>
@@ -31,26 +32,49 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (Location location in Model)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Id)
+                    @Html.DisplayFor(modelItem => location.Id)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Address)
+                    @Html.DisplayFor(modelItem => location.Address)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.City)
+                    @Html.DisplayFor(modelItem => location.City)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Zipcode)
+                    @Html.DisplayFor(modelItem => location.Zipcode)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.State)
+                    @Html.DisplayFor(modelItem => location.State)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Inventory)
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product ID</th>
+                                <th>Product Name</th>
+                                <th>Product Price</th>
+                                <th>Stock</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                foreach (KeyValuePair<Project1.BusinessLogic.Product, int> item in location.Inventory)
+                                {
+                                    <tr>
+                                        <td>@item.Key.Id</td>
+                                        <td>@item.Key.Name</td>
+                                        <td>$@System.Decimal.Round(item.Key.Price, 2)</td>
+                                        <td>@item.Value</td>
+                                    </tr>
+                                }
+                            }
+                            <tr></tr>
+                        </tbody>
+                    </table>
                 </td>
             </tr>
         }

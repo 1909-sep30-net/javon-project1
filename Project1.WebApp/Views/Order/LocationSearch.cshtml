@@ -5,16 +5,15 @@
 }
 
 <h1>@ViewData["Title"]</h1>
-
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="LocationSearch">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="LocationId" class="control-label"></label>
+                <label asp-for="LocationId" class="control-label">Location</label>
                 <div class="col-md-10">
-                    @Html.DropDownListFor(m => m.LocationId, Model.Locations.Select(l => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Text = l.ToString(), Value = l.Id.ToString() }));
+                    @Html.DropDownListFor(m => m.LocationId, Model.Locations.Select(l => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Text = l.ToString(), Value = l.Id.ToString() }))
                 </div>
             </div>
             <div class="form-group">
