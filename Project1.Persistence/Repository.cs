@@ -30,21 +30,29 @@ namespace Project1.Persistence
         public IEnumerable<BusinessLogic.Customer> GetAllCustomers()
         {
             Log.Information($"Getting all customers");
-            return _context.Customer.ToList().Select(c => GetCustomerById(c.Id));
+            return _context.Customer
+                .Select(c => new BusinessLogic.Customer()
+                {
+                    Id = c.Id,
+                    FirstName = c.FirstName,
+                    LastName = c.LastName
+                });
         }
 
         /// <summary>
-        /// Add a customer.
+        /// Add a customer with a first and last name.
         /// </summary>
-        /// <param name="customer">Customer to add</param>
-        public void AddCustomer(BusinessLogic.Customer customer)
+        /// <param name="firstName">First name of the customer to add</param>
+        /// <param name="lastName">Last name of the customer to add</param>
+        public void AddCustomer(string firstName, string lastName)
         {
-            Log.Information($"Adding customer {customer}");
-            _context.Customer.Add(new Entities.Customer
-            {
-                FirstName = customer.FirstName,
-                LastName = customer.LastName
-            });
+            Log.Information($"Adding customer {firstName} {lastName}");
+            _context.Customer
+                .Add(new Entities.Customer
+                {
+                    FirstName = firstName,
+                    LastName = lastName
+                });
             _context.SaveChanges();
         }
 
@@ -56,8 +64,14 @@ namespace Project1.Persistence
         public IEnumerable<BusinessLogic.Customer> GetCustomersByLastName(string lastName)
         {
             Log.Information($"Getting all customers with last name {lastName}");
-            return _context.Customer.Where(c => c.LastName.ToLower() == lastName.ToLower()).ToList()
-                .Select(c => GetCustomerById(c.Id));
+            return _context.Customer
+                .Where(c => c.LastName.ToLower() == lastName.ToLower())
+                .Select(c => new BusinessLogic.Customer()
+                {
+                    Id = c.Id,
+                    FirstName = c.FirstName,
+                    LastName = c.LastName
+                });
         }
 
         /// <summary>

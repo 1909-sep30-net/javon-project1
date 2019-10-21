@@ -26,7 +26,7 @@ namespace Project1.WebApp.Controllers
             IEnumerable<BusinessLogic.Customer> customers = _repository.GetAllCustomers();
             return View(customers.Select(c => new WebApp.Models.Customer
             {
-                Id = c.Id.ToString(),
+                Id = c.Id,
                 FirstName = c.FirstName,
                 LastName = c.LastName
             }));
@@ -56,12 +56,12 @@ namespace Project1.WebApp.Controllers
                 {
                     return View(viewModel);
                 }
-
-                _repository.AddCustomer(new BusinessLogic.Customer
+                BusinessLogic.Customer customer = new BusinessLogic.Customer
                 {
                     FirstName = viewModel.FirstName,
                     LastName = viewModel.LastName
-                });
+                };
+                _repository.AddCustomer(customer.FirstName, customer.LastName);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -96,7 +96,6 @@ namespace Project1.WebApp.Controllers
                 {
                     return View(viewModel);
                 }
-
                 return RedirectToAction(nameof(SearchResults), viewModel);
             }
             catch (Exception ex)
@@ -115,14 +114,17 @@ namespace Project1.WebApp.Controllers
         {
             try
             {
-                IEnumerable<BusinessLogic.Customer> filteredCustomers = _repository.GetCustomersByLastName(viewModel.LastName);
-
-                return View("SearchResults", filteredCustomers.Select(c => new WebApp.Models.Customer
+                if (!ModelState.IsValid)
                 {
-                    Id = c.Id.ToString(),
-                    FirstName = c.FirstName,
-                    LastName = c.LastName
-                }));
+                    return RedirectToAction(nameof(Index));
+                }
+                return View("SearchResults", _repository.GetCustomersByLastName(viewModel.LastName)
+                    .Select(c => new WebApp.Models.Customer
+                    {
+                        Id = c.Id,
+                        FirstName = c.FirstName,
+                        LastName = c.LastName
+                    }));
             }
             catch (Exception ex)
             {

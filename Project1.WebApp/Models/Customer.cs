@@ -6,7 +6,7 @@ namespace Project1.WebApp.Models
     public class Customer
     {
         [DisplayName("ID")]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         [DisplayName("First Name")]
         [Required]

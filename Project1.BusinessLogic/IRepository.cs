@@ -14,10 +14,11 @@ namespace Project1.BusinessLogic
         IEnumerable<Customer> GetAllCustomers();
 
         /// <summary>
-        /// Add a customer.
+        /// Add a customer with a first and last name.
         /// </summary>
-        /// <param name="customer">Customer to add</param>
-        void AddCustomer(Customer customer);
+        /// <param name="firstName">First name of the customer to add</param>
+        /// <param name="lastName">Last name of the customer to add</param>
+        public void AddCustomer(string firstName, string lastName);
 
         /// <summary>
         /// Get all customers with the given last name.
