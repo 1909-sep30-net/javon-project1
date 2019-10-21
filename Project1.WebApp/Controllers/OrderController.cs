@@ -196,7 +196,7 @@ namespace Project1.WebApp.Controllers
                     Location = order.StoreLocation.ToString(),
                     Customer = order.Customer.ToString(),
                     OrderTime = order.OrderTime.ToString(),
-                    LineItems = order.StoreLocation.ToStringInventory()
+                    LineItems = order.ToStringLineItems()
                 });
             }
             catch (Exception ex)

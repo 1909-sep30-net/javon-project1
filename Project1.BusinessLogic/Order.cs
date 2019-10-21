@@ -125,17 +125,26 @@ namespace Project1.BusinessLogic
         /// <returns>The id, store location, customer, order time, line items, and sale total</returns>
         public override string ToString()
         {
-            String header = $"[Order {Id}]\n" +
+            string header = $"[Order {Id}]\n" +
                             $"{StoreLocation}\n" +
                             $"{Customer}\n" +
                             $"[Datetime] {OrderTime}\n";
-            String body = "";
+            string footer = $"Sale Total: ${Total}";
+            return $"{header}{ToStringLineItems()}{footer}";
+        }
+
+        /// <summary>
+        /// Returns the line items of this order in string format.
+        /// </summary>
+        /// <returns>The line items of this order in string format</returns>
+        public string ToStringLineItems()
+        {
+            string str = "";
             foreach (var li in LineItems)
             {
-                body += $"{li.Key} [Quantity] {li.Value}\n";
+                str += $"{li.Key} [Quantity] {li.Value}\n";
             }
-            String footer = $"Sale Total: ${Total}";
-            return $"{header}{body}{footer}";
+            return str;
         }
     }
 }
