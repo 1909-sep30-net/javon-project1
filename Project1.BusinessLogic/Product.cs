@@ -1,4 +1,6 @@
-﻿namespace Project1.BusinessLogic
+﻿using System;
+
+namespace Project1.BusinessLogic
 {
     /// <summary>
     /// The Product object for the Business Logic. Upon creation, validates the product data.
@@ -15,7 +17,7 @@
         /// <returns>The id, name, and price of the product</returns>
         public override string ToString()
         {
-            return $"[Product {Id}] [Name] {Name} [Price] ${Price}";
+            return $"[Product {Id}] [Name] {Name} [Price] ${Decimal.Round(Price, 2)}";
         }
     }
 }

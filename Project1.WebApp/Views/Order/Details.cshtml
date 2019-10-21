@@ -36,7 +36,34 @@
             @Html.DisplayNameFor(model => model.LineItems)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LineItems)
+            <table>
+                <thead>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Product Price</th>
+                <th>Quantity</th>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (KeyValuePair<Project1.BusinessLogic.Product, int> item in Model.LineItems)
+                        {
+                            <tr>
+                                <td>@item.Key.Id</td>
+                                <td>@item.Key.Name</td>
+                                <td>@item.Key.Price</td>
+                                <td>@item.Value</td>
+                            </tr>
+                        }
+                    }
+                    <tr></tr>
+                </tbody>
+            </table>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalSale)
+        </dt>
+        <dd class="col-sm-10">
+            $@Html.DisplayFor(model => model.TotalSale)
         </dd>
     </dl>
 </div>

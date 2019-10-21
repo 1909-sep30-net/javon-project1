@@ -129,7 +129,7 @@ namespace Project1.BusinessLogic
                             $"{StoreLocation}\n" +
                             $"{Customer}\n" +
                             $"[Datetime] {OrderTime}\n";
-            string footer = $"Sale Total: ${Total}";
+            string footer = $"Sale Total: ${Decimal.Round(Total, 2)}";
             return $"{header}{ToStringLineItems()}{footer}";
         }
 

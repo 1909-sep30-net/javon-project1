@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Project1.WebApp.Models
 {
@@ -17,6 +19,9 @@ namespace Project1.WebApp.Models
         public string OrderTime { get; set; }
 
         [DisplayName("Line Items")]
-        public string LineItems { get; set; }
+        public Dictionary<BusinessLogic.Product, int> LineItems { get; set; }
+
+        [DisplayName("Total Sale")]
+        public decimal TotalSale { get; set; }
     }
 }

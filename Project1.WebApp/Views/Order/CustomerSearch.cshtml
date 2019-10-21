@@ -14,11 +14,11 @@
             <div class="form-group">
                 <label asp-for="CustomerId" class="control-label"></label>
                 <div class="col-md-10">
-                    @Html.DropDownListFor(m => m.CustomerId, Model.Customers.Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Text = c.ToString(), Value = c.Id.ToString() }));
+                    @Html.DropDownListFor(m => m.CustomerId, Model.Customers.Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Text = c.ToString(), Value = c.Id.ToString() }))
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Search" class="btn btn-primary" />
+                <input type="submit" value="List Orders" class="btn btn-primary" />
             </div>
         </form>
     </div>
