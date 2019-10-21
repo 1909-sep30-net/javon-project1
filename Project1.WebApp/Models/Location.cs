@@ -6,7 +6,7 @@ namespace Project1.WebApp.Models
     public class Location
     {
         [DisplayName("Location ID")]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         [DisplayName("Address")]
         public string Address { get; set; }

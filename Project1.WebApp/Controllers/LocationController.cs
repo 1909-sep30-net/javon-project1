@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Project1.WebApp.Controllers
@@ -19,10 +18,9 @@ namespace Project1.WebApp.Controllers
         /// <returns>The list of locations</returns>
         public ActionResult Index()
         {
-            IEnumerable<BusinessLogic.Location> blLocations = _repository.GetAllLocations();
-            return View(blLocations.Select(l => new WebApp.Models.Location
+            return View(_repository.GetAllLocations().Select(l => new WebApp.Models.Location
             {
-                Id = l.Id.ToString(),
+                Id = l.Id,
                 Address = l.Address,
                 City = l.City,
                 Zipcode = l.Zipcode,
