@@ -197,7 +197,8 @@ namespace Project1.Persistence
         /// <param name="locationId">The location id</param>
         /// <param name="customerId">The customer id</param>
         /// <param name="selectedInventory">The selected dictionary of product ids to stock</param>
-        public void CreateOrder(int locationId, int customerId, Dictionary<int, int> selectedInventory)
+        /// <returns>The id of the newly created order</returns>
+        public int CreateOrder(int locationId, int customerId, Dictionary<int, int> selectedInventory)
         {
             Log.Information($"Creating order with location ID {locationId} and customer ID {customerId}");
             BusinessLogic.Order order = new BusinessLogic.Order
@@ -258,6 +259,9 @@ namespace Project1.Persistence
             }
             Log.Information($"Updated the inventories");
             Save();
+
+            Log.Information($"About to return the additional order with ID {additionalOrder.Id}");
+            return additionalOrder.Id;
         }
 
         /// <summary>

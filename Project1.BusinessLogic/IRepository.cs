@@ -81,6 +81,7 @@ namespace Project1.BusinessLogic
         /// <param name="locationId">The location id</param>
         /// <param name="customerId">The customer id</param>
         /// <param name="selectedInventory">The selected dictionary of product ids to stock</param>
-        void CreateOrder(int locationId, int customerId, Dictionary<int, int> selectedInventory);
+        /// <returns>The id of the newly created order</returns>
+        int CreateOrder(int locationId, int customerId, Dictionary<int, int> selectedInventory);
     }
 }

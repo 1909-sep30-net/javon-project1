@@ -190,6 +190,7 @@ namespace Project1.WebApp.Controllers
         {
             try
             {
+                Log.Information($"Getting details of order ID {id}");
                 BusinessLogic.Order order = _repository.GetOrderById(id);
                 return View(new WebApp.Models.OrderDetails
                 {
@@ -312,11 +313,12 @@ namespace Project1.WebApp.Controllers
                 {
                     Log.Information($"Product ID {item.Key} Quantity {item.Value}");
                 }
-                _repository.CreateOrder(
+                int additionalOrderId = _repository.CreateOrder(
                     viewModel.LocationId,
                     viewModel.CustomerId,
                     viewModel.SelectedInventory);
-                return RedirectToAction(nameof(Index));
+                Log.Information($"Received order ID {additionalOrderId} from CreateOrder");
+                return RedirectToAction(nameof(Details), new { id = additionalOrderId });
             }
             catch (Exception ex)
             {
