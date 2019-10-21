@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,15 @@ namespace Project1.WebApp.Controllers
         /// <returns>Form for creating a customer</returns>
         public ActionResult Create()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         /// <summary>
@@ -67,7 +76,7 @@ namespace Project1.WebApp.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Name", ex.Message);
+                Log.Error(ex.Message);
                 return View(viewModel);
             }
         }
@@ -100,7 +109,7 @@ namespace Project1.WebApp.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Name", ex.Message);
+                Log.Error(ex.Message);
                 return View(viewModel);
             }
         }
@@ -128,7 +137,7 @@ namespace Project1.WebApp.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Name", ex.Message);
+                Log.Error(ex.Message);
                 return RedirectToAction(nameof(Index));
             }
         }

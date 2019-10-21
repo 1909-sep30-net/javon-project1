@@ -35,16 +35,15 @@ namespace Project1.WebApp.Controllers
         {
             try
             {
-                IEnumerable<BusinessLogic.Location> locations = _repository.GetAllLocations();
                 return View(new WebApp.Models.OrderLocationSearch
                 {
-                    Locations = locations,
+                    Locations = _repository.GetAllLocations(),
                     LocationId = 0
                 });
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Name", ex.Message);
+                Log.Error(ex.Message);
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -64,13 +63,12 @@ namespace Project1.WebApp.Controllers
                 {
                     return View(viewModel);
                 }
-
                 return RedirectToAction(nameof(LocationHistory), viewModel);
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Name", ex.Message);
-                return RedirectToAction(nameof(Index)); ;
+                Log.Error(ex.Message);
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -85,19 +83,22 @@ namespace Project1.WebApp.Controllers
         {
             try
             {
-                IEnumerable<BusinessLogic.Order> filteredOrders = _repository.GetOrdersByLocationId(viewModel.LocationId);
-
-                return View(filteredOrders.Select(o => new WebApp.Models.Order
+                if (!ModelState.IsValid)
                 {
-                    Id = o.Id.ToString(),
-                    Location = o.StoreLocation.ToString(),
-                    Customer = o.Customer.ToString(),
-                    OrderTime = o.OrderTime.ToString()
-                }));
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(_repository.GetOrdersByLocationId(viewModel.LocationId)
+                    .Select(o => new WebApp.Models.Order
+                    {
+                        Id = o.Id.ToString(),
+                        Location = o.StoreLocation.ToString(),
+                        Customer = o.Customer.ToString(),
+                        OrderTime = o.OrderTime.ToString()
+                    }));
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Name", ex.Message);
+                Log.Error(ex.Message);
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -112,16 +113,15 @@ namespace Project1.WebApp.Controllers
         {
             try
             {
-                IEnumerable<BusinessLogic.Customer> customers = _repository.GetAllCustomers();
                 return View(new WebApp.Models.OrderCustomerSearch
                 {
-                    Customers = customers,
+                    Customers = _repository.GetAllCustomers(),
                     CustomerId = 0
                 });
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Name", ex.Message);
+                Log.Error(ex.Message);
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -143,13 +143,12 @@ namespace Project1.WebApp.Controllers
                 {
                     return View(viewModel);
                 }
-
                 return RedirectToAction(nameof(CustomerHistory), viewModel);
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Name", ex.Message);
-                return RedirectToAction(nameof(Index));
+                Log.Error(ex.Message);
+                return View(viewModel);
             }
         }
 
@@ -162,19 +161,22 @@ namespace Project1.WebApp.Controllers
         {
             try
             {
-                IEnumerable<BusinessLogic.Order> filteredOrders = _repository.GetOrdersByCustomerId(viewModel.CustomerId);
-
-                return View(filteredOrders.Select(o => new WebApp.Models.Order
+                if (!ModelState.IsValid)
                 {
-                    Id = o.Id.ToString(),
-                    Location = o.StoreLocation.ToString(),
-                    Customer = o.Customer.ToString(),
-                    OrderTime = o.OrderTime.ToString()
-                }));
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(_repository.GetOrdersByCustomerId(viewModel.CustomerId)
+                    .Select(o => new WebApp.Models.Order
+                    {
+                        Id = o.Id.ToString(),
+                        Location = o.StoreLocation.ToString(),
+                        Customer = o.Customer.ToString(),
+                        OrderTime = o.OrderTime.ToString()
+                    }));
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Name", ex.Message);
+                Log.Error(ex.Message);
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -189,7 +191,6 @@ namespace Project1.WebApp.Controllers
             try
             {
                 BusinessLogic.Order order = _repository.GetOrderById(id);
-
                 return View(new WebApp.Models.OrderDetails
                 {
                     Id = order.Id.ToString(),
@@ -202,7 +203,7 @@ namespace Project1.WebApp.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Name", ex.Message);
+                Log.Error(ex.Message);
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -218,17 +219,15 @@ namespace Project1.WebApp.Controllers
             try
             {
                 Log.Information($"Placing an Order GET");
-                IEnumerable<BusinessLogic.Location> locations = _repository.GetAllLocations();
-                IEnumerable<BusinessLogic.Customer> customers = _repository.GetAllCustomers();
                 return View(new WebApp.Models.OrderPlace
                 {
-                    Locations = locations,
-                    Customers = customers
+                    Locations = _repository.GetAllLocations(),
+                    Customers = _repository.GetAllCustomers()
                 });
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Name", ex.Message);
+                Log.Error(ex.Message);
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -244,14 +243,18 @@ namespace Project1.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Place(WebApp.Models.OrderPlace viewModel)
         {
-            Log.Information($"Placing an Order POST - Redirecting to GET Place2");
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return View(viewModel);
+                }
+                Log.Information($"Placing an Order POST - Redirecting to GET Place2");
                 return RedirectToAction(nameof(Place2), viewModel);
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Name", ex.Message);
+                Log.Error(ex.Message);
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -267,6 +270,10 @@ namespace Project1.WebApp.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
                 Log.Information($"Placing an Order 2 - Location ID: {viewModel.LocationId} Customer ID: {viewModel.CustomerId}");
                 BusinessLogic.Location location = _repository.GetLocationById(viewModel.LocationId);
                 Log.Information($"Placing an Order 2 - Location: {location.ToString()} Inventory: {location.ToStringInventory()}");
@@ -280,7 +287,7 @@ namespace Project1.WebApp.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Name", ex.Message);
+                Log.Error(ex.Message);
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -296,12 +303,15 @@ namespace Project1.WebApp.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return View(viewModel);
+                }
                 Log.Information($"Creating an order - location ID {viewModel.LocationId} for customer ID {viewModel.CustomerId}");
                 foreach (KeyValuePair<int, int> item in viewModel.SelectedInventory)
                 {
                     Log.Information($"Product ID {item.Key} Quantity {item.Value}");
                 }
-
                 _repository.CreateOrder(
                     viewModel.LocationId,
                     viewModel.CustomerId,
