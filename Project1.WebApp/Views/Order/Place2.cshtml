@@ -1,4 +1,5 @@
-﻿@model Project1.WebApp.Models.OrderCreate
+﻿@using System
+@model Project1.WebApp.Models.OrderCreate
 
 @{
     ViewData["Title"] = $"Place an Order at Location {Model.LocationId} for Customer {Model.CustomerId}";
@@ -15,7 +16,7 @@
                 foreach (KeyValuePair<Project1.BusinessLogic.Product, int> item in Model.Inventory)
                 {
                     <div class="form-group">
-                        @Html.LabelFor(m => item.Key, item.Key.Name)
+                        @Html.LabelFor(m => item.Key, $"{item.Key.Name} (${Decimal.Round(item.Key.Price, 2)})")
                         @Html.DropDownListFor(m => m.SelectedInventory[item.Key.Id], Enumerable.Range(0, item.Value + 1).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
                     </div>
                 }
