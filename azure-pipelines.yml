@@ -20,7 +20,7 @@ steps:
   displayName: dotnet test
   inputs:
     command: 'test'
-    projects: './RestaurantReviews'
+    projects: './'
     arguments: '-c $(buildConfiguration) --collect "XPlat Code Coverage"'
 
 - task: PublishCodeCoverageResults@1
