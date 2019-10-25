@@ -7,18 +7,18 @@
 <h1>@ViewData["Title"]</h1>
 <hr />
 <table class="table">
+    <caption>Customer Search Results</caption>
     <thead>
         <tr>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.Id)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.LastName)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>

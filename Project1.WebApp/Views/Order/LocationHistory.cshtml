@@ -7,21 +7,21 @@
 <h1>@ViewData["Title"]</h1>
 <hr />
 <table class="table">
+    <caption>Order History of Location</caption>
     <thead>
         <tr>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.Id)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.Location)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.Customer)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.OrderTime)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>

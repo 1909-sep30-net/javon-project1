@@ -8,27 +8,27 @@
 <h1>@ViewData["Title"]</h1>
 <hr />
 <table class="table">
+    <caption>Location List</caption>
     <thead>
         <tr>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.Id)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.Address)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.City)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.Zipcode)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.State)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.Inventory)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -52,12 +52,13 @@
                 </td>
                 <td>
                     <table>
+                        <caption>Inventory</caption>
                         <thead>
                             <tr>
-                                <th>Product ID</th>
-                                <th>Product Name</th>
-                                <th>Product Price</th>
-                                <th>Stock</th>
+                                <th scope="col">Product ID</th>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Product Price</th>
+                                <th scope="col">Stock</th>
                             </tr>
                         </thead>
                         <tbody>
